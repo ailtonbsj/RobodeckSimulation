@@ -116,3 +116,7 @@ robo.turnOff()
 ![Planejador-reator](ClassDiagram/PlanejadorReator.png)
 
 ![pnr](ClassDiagram/pnr.png)
+
+## Referências
+
+- [Artigo sobre o simulador apresentado na MNR/2017](http://200.145.27.212/MNR/mostravirtual/interna.php?id=20298)
