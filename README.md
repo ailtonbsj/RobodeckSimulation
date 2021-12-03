@@ -2,11 +2,18 @@
 
 Este é o simulador do Robodeck desenvolvido usando Python com Pygame.
 
+## O Robodeck
+
+O Robodeck é uma plataforma robótica para uso geral e permite utilizar diversos sensores.
+
+![Dimensoes](ClassDiagram/img2.png)
+
+![Dimensoes](ClassDiagram/img1.png)
+
 ## Itens do projeto
 
-- Modulo python robodeck_pkg (O simulador)
+- Modulo python `robodeck_pkg` (O simulador)
 - Exemplo de arquitetura Planejador-reator
-- Exemplo de uso de funções do modulo
 - Diagrama de classes
 
 ## Requerimentos
@@ -100,10 +107,12 @@ time.sleep(5)
 robo.turnOff()
 ```
 
-## Diagrama de classes do pacote
+## Diagrama de classes do módulo
 
 ![Diagrama](ClassDiagram/Robodeck.png)
 
 ## Implementação da arquitetura Planejador-reator
 
 ![Planejador-reator](ClassDiagram/PlanejadorReator.png)
+
+![pnr](ClassDiagram/pnr.png)
