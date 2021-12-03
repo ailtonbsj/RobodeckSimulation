@@ -40,9 +40,9 @@ class Robodeck(Thread):
     obstaculos = []
     plotar = []
     objetivo = (0,0)
+    isRunningSimulation = True
 
     def __init__(self):
-        #self.conectar()
         f = open('robodeck_pkg/robodeckSIM.ini','r')
         for i in f:
             pos = i.find('=')
@@ -85,21 +85,6 @@ class Robodeck(Thread):
         f.close()
         Thread.__init__(self)
 
-#    def conectar(self):
-#        #print ("conectado")
-#        pass
-#
-#    def enviaComando(self, comando):
-#        pass
-#
-#    def Conectado(self):
-#        #print ("Conectado ?")
-#        return True
-#
-#    def FecharSessao(self):
-#        #print "Sesão fechada."
-#        return True
-
     #Simulação Completada
     def andar(self, velocidade):
         if (velocidade == 0):
@@ -109,12 +94,6 @@ class Robodeck(Thread):
             self.isMoving = True
             #print ("andando")
         return True
-        
-#    #Nao disponivel na simulação
-#    def Curva(self, raio, velocidade):
-#        time.sleep(2)
-#        #print ("fazendo curva...")
-#        return True
 
     #Simulação Completada
     def girar(self, lado, velocidade):
@@ -128,22 +107,6 @@ class Robodeck(Thread):
             #print ("parou de girar")
             self.isTurn = 0
         return True
-    
-#    #Nao disponivel na simulação    
-#    def Diagonal(self, angulo, velocidade):
-#        if angulo in range(1, 47):
-#            #print ("andando diagonal direita para frente")
-#            return True
-#        if angulo in range(91, 137):
-#            #print ("andando diagonal direita para tras")
-#            return True
-#        if angulo in range(-1, -47):
-#            #print ("andando diagonal esquerda para frente")
-#            return True
-#        if angulo in range(-91, -137):
-#            #print ("andando diagonal esquerda para tras")
-#            return True
-#        return False
 
     #Simulação Completada
     def lerOdometroD(self):
@@ -170,6 +133,7 @@ class Robodeck(Thread):
     #Simulação Completada
     def lerUltrasomEsquerdo(self):
         return self.sensorUltraSomE
+
     #Simulação Completada
     def lerUltrasomDireito(self):
         return self.sensorUltraSomD
@@ -177,14 +141,6 @@ class Robodeck(Thread):
     #Simulação Completada
     def lerBussola(self):
         return self.angulo
-
-#    #Ainda nao disponivel para simulação
-#    def LerIRD(self):
-#        return 0
-#        
-#    #Ainda nao disponivel para simulação
-#    def LerIRE(self):
-#        return 0
 
     #Funcao exclusiva da simulacao NAO USAR OU ALTERAR
     def convertCoords(self,(x,y),(origemX,origemY)=(250,450)):
@@ -230,8 +186,11 @@ class Robodeck(Thread):
         x = r*math.cos(math.radians(teta))+xi
         y = r*math.sin(math.radians(teta))+yi
         return (x,y)
-        
-    
+
+    # Finaliza simulação
+    def turnOff(self):
+        self.isRunningSimulation = False
+
     # Executa Thread de simulação
     def run(self):
         WIDTHSCREEN = 800
@@ -252,7 +211,7 @@ class Robodeck(Thread):
         objetivo = pygame.image.load('robodeck_pkg/objetivo.png')
         self.rosa = rotate(self.rosa,self.norte)
         self.fonte = pygame.font.Font("robodeck_pkg/font.ttf",12)
-        pygame.display.set_caption('Robodeck Simulation 0.2 by José Ailton B. da Silva')
+        pygame.display.set_caption('Robodeck Simulation 0.2 by Jose Ailton B. da Silva')
         stepMov = self.stepMoving
         stepTur = self.stepTurn
         obstDesenho = []
@@ -264,7 +223,7 @@ class Robodeck(Thread):
             posf = self.convertCoords(i[1])
             ob = (posi[0],posi[1]),(posf[0],posf[1])
             obstDesenho.append(ob)
-        while True:
+        while self.isRunningSimulation:
             #area de atualizacao
             if self.isMoving: #anda
                 if self.isColision:
@@ -320,6 +279,9 @@ class Robodeck(Thread):
                         self.obstaculos = pickle.load(open('robodeck_pkg/salveX.txt', 'r'))
                         obstDesenho = pickle.load(open('robodeck_pkg/salveY.txt', 'r'))
                         print "Carregado"
+                    elif event.key == pygame.K_q:
+                        self.isRunningSimulation = False
+                        print "Finishing..."
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if tipoObstaculo == 1:
                         pos1 = event.pos

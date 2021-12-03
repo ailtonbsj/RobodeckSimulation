@@ -3,6 +3,7 @@ from robodeck_pkg.robodeckSIM import *
 from geometria import *
 import  time
 from PIL import *
+from PIL import Image, ImageOps
 from matplotlib.pyplot import *
 
 class CONST():
@@ -171,7 +172,7 @@ class Planejador():
             if self.andar(1000) == CONST.FINDED_OBJ:
                 if (self.xObjSec == self.xObjPri) and (self.yObjSec == self.yObjPri):
                     print "Objetivo Completado!"
-                    imshow(self.mapa,interpolation='bilinear')
+                    imshow(ImageOps.flip(self.mapa),interpolation='bilinear')
                     show()
                     break
                 else:
@@ -325,46 +326,3 @@ class Planejador():
         self.geraImage()    
 
 pl = Planejador()
-
-#pl.andar(800)
-#pl.girarToAngulo(0)
-#
-#pl.andar(800)
-#pl.girarToAngulo(180)
-#
-#pl.andar(800)
-#pl.girarToAngulo(270)
-#
-#pl.andar(180)
-#pl.girarToAngulo(0)
-#
-#pl.andar(300) 
-#pl.girarToAngulo(270)
-#
-#pl.andar(300)
-#pl.girarToAngulo(0)
-#
-#pl.andar(600)
-#pl.girarToAngulo(90)
-#
-#pl.andar(800)
-#pl.girarToAngulo(180)
-#
-#pl.andar(800)
-#pl.girarToAngulo(90)
-#
-#pl.andar(800)
-#pl.girarToAngulo(0)
-#
-#pl.andar(800)
-#pl.girarToAngulo(270)
-#
-#pl.andar(200)
-#pl.girarToAngulo(0)
-#
-#pl.andar(200)
-#pl.girarToAngulo(90)
-#
-#pl.andar(200)
-#
-#imshow(pl.mapa,interpolation='bilinear')
