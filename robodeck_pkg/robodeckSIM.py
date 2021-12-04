@@ -271,6 +271,10 @@ class Robodeck(Thread):
                         self.obstaculos = pickle.load(open('robodeck_pkg/scenes/4/salveX.txt', 'r'))
                         obstDesenho = pickle.load(open('robodeck_pkg/scenes/4/salveY.txt', 'r'))
                         print "Carregado"
+                    elif event.key == pygame.K_5:
+                        self.obstaculos = pickle.load(open('robodeck_pkg/scenes/5/salveX.txt', 'r'))
+                        obstDesenho = pickle.load(open('robodeck_pkg/scenes/5/salveY.txt', 'r'))
+                        print "Carregado"
                     elif event.key == pygame.K_s:
                         pickle.dump(self.obstaculos,open('robodeck_pkg/salveX.txt', 'w'))
                         pickle.dump(obstDesenho,open('robodeck_pkg/salveY.txt', 'w'))
@@ -300,6 +304,8 @@ class Robodeck(Thread):
                             passox = 0
                             passoy = 20
                             quant = abs(int(y/20))
+                        if quant == 0:
+                            quant = 1
                         for i in range(0,quant+1):
                             if abs(x) > abs(y):
                                 xa = posIni[0]+sign(x)*(i*20)

@@ -8,7 +8,7 @@ from matplotlib.pyplot import *
 
 class CONST():
     WIDTH_STOP = 35
-    WIDTH_DESVIO = 20
+    WIDTH_DESVIO = 22
     FINDED_OBJ = 10
 
 class Reator():
@@ -20,7 +20,7 @@ class Reator():
     robo = None
     anguloInicial = 0
     odometro = 0
-    PASSO = 0.5
+    PASSO = 0.05
     
     #Método Construtor
     def __init__(self):
@@ -155,7 +155,7 @@ class Planejador():
         self.reator = Reator()
         self.mapa = Image.new("L",(self.wm,self.hm))
         gray()
-        time.sleep(3)
+        raw_input("Pressione uma tecla para iniciar! ")
         while True:
             sf,st,se,sd = self.scanUltras()
             if sf:
@@ -169,11 +169,13 @@ class Planejador():
                 coords = self.desvios.pop()
                 self.xObjSec = coords[0][0]
                 self.yObjSec = coords[0][1]
+                self.logStack()
             if self.andar(1000) == CONST.FINDED_OBJ:
                 if (self.xObjSec == self.xObjPri) and (self.yObjSec == self.yObjPri):
                     print "Objetivo Completado!"
                     imshow(ImageOps.flip(self.mapa),interpolation='bilinear')
                     show()
+                    self.reator.robo.turnOff()
                     break
                 else:
                     self.xObjSec = self.xObjPri
@@ -190,6 +192,7 @@ class Planejador():
             else:
                 larg = CONST.WIDTH_DESVIO
             if (recToPol((self.xObjSec,self.yObjSec),(self.xRobo,self.yRobo))[0]) < larg:
+                print("Objetivo Secundario completo!")
                 return CONST.FINDED_OBJ
             self.scan()
     
@@ -301,7 +304,7 @@ class Planejador():
                     yy = self.esquerdaIni[1]+(yy/2)
                     pt = ((xx,yy),floatToDegree(self.reator.getAngulo()+90))
                     self.desvios.append(pt)
-                    print str(pt)                    
+                    self.logStack()
                     self.esquerdaIni = 0
                     self.esquerdaEnd = 0
                     
@@ -320,9 +323,14 @@ class Planejador():
                     yy = self.direitaIni[1]+(yy/2)
                     pt = ((xx,yy),floatToDegree(self.reator.getAngulo()-90))
                     self.desvios.append(pt)
-                    print str(pt)                    
+                    self.logStack()                   
                     self.direitaIni = 0
                     self.direitaEnd = 0
-        self.geraImage()    
+        self.geraImage()
+
+    def logStack(self):
+        print("--Desvios---")
+        for p in self.desvios: print(p)
+        print("--Objetivo--: "+ str(self.xObjSec) + "," + str(self.yObjSec))   
 
 pl = Planejador()
